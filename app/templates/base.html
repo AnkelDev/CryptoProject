@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lotos Crypto Transaction</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/distribution.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+ 
+
+</head>
+<body>
+  <!-- 🌸 Загрузочная анимация -->
+  <div id="loader-overlay">
+    <div id="loader-svg" class="lotus-container"></div>
+    <canvas id="lotus-particles"></canvas>
+  </div>
+
+  <!-- 🌐 Основная оболочка сайта -->
+  <div class="app-shell" id="app-shell" style="display:none;">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="/static/img/logo-white.png" alt="Lotos" />
+        <span>Lotos</span>
+      </div>
+      <nav>
+        <a href="/" class="nav-link">🌐 Главная</a>
+        <a href="/distribute" class="nav-link">💸 Распределение</a>
+        <a href="#" class="nav-link">⚙️ Настройки</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

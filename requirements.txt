@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+jinja2
+solana
+base58
+requests
