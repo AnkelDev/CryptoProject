@@ -17,6 +17,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
 
+
 def _client(rpc_url: str) -> Client:
     return Client(rpc_url)
 
@@ -27,6 +28,7 @@ def _client(rpc_url: str) -> Client:
 
 def get_balance_sol(pubkey: str, rpc_url: str) -> float:
     client = _client(rpc_url)
+
     try:
         pubkey_obj = PublicKey.from_string(pubkey)
     except Exception as e:
@@ -105,11 +107,13 @@ def prepare_distribution_plan(
             raise Exception("Недостаточно средств для покрытия комиссий")
         per = available / n
         amounts = [per] * n
+
     elif equal_shares:
         if total_sol <= 0:
             raise Exception("Введите сумму для распределения")
         per = total_sol / n
         amounts = [per] * n
+
     else:
         per = total_sol / n if total_sol else 0
         amounts = [per] * n
@@ -153,7 +157,7 @@ def send_distribution_transactions(
 ):
     client = _client(rpc_url)
 
-    # --- Keypair decode ---
+    # --- Decode private key ---
     secret_bytes = base58.b58decode(sender_private_key_base58)
 
     if len(secret_bytes) == 64:
@@ -171,11 +175,17 @@ def send_distribution_transactions(
 
     results = []
 
-    # latest blockhash
+    # --- latest blockhash (исправлено) ---
     blockhash_resp = client.get_latest_blockhash()
-    blockhash = Hash.from_string(blockhash_resp.value.blockhash)
+    raw_blockhash = blockhash_resp.value.blockhash
 
-    # process each transfer
+    blockhash = (
+        raw_blockhash
+        if isinstance(raw_blockhash, Hash)
+        else Hash.from_string(raw_blockhash)
+    )
+
+    # --- process each transfer ---
     for rec in plan["recipients"]:
         to_addr = rec["address"]
         amount_sol = rec["amount_sol"]
